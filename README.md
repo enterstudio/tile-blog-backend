@@ -12,6 +12,7 @@ with the following structure:
 
 ```
 # config/local.env
+
 DJANGO_SECRET_KEY=<some-secret-key>
 BLOG_DB_NAME=<your-local-postgres-db-name>
 POSTGRES_DB_USER=<your-postgres-username>
