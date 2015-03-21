@@ -11,15 +11,15 @@ You need `pip`, `postgres`, and `virtualenv`.  You also need a config file (This
 with the following structure:
 
 ```
-# config/local.env
-
 DJANGO_SECRET_KEY=<some-secret-key>
 BLOG_DB_NAME=<your-local-postgres-db-name>
 POSTGRES_DB_USER=<your-postgres-username>
 POSTGRES_DB_PASS=<your-postgres-password>
 ```
 
-```bash
+To run the server locally, just run the following commands:
+
+```
 $ git clone https://github.com/Fuiste/tile-blog-backend.git
 $ virtualenv venv
 $ source venv/bin/activate
