@@ -12,12 +12,23 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# Default location for a config file, so you don't have to mae secret keys and other fun stuff public
+CONFIG_FILE = os.path.join(BASE_DIR, 'config/local.env')
+
+try:
+    print "Opening config at {0}".format(CONFIG_FILE)
+    config_vars = open(CONFIG_FILE).readlines()
+    for l in config_vars:
+        s = l.split('=')
+        os.environ[s[0].strip()] = s[1].strip()
+except:
+    print "No local config file found"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm&udrv)!-n_v@5d!1l@vb5pzvy^roi6ya6szfeh9*2_=xc@=#='
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'YOUR_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,9 +69,9 @@ WSGI_APPLICATION = 'ember_tile_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': os.environ.get('BACKEND_DB_NAME', 'context'),
+        'NAME': os.environ.get('BLOG_DB_NAME', ''),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': os.environ.get('POSTGRES_DB_USER', 'fuiste'),
+        'USER': os.environ.get('POSTGRES_DB_USER', ''),
         'PASSWORD': os.environ.get('POSTGRES_DB_PASS', ''),
         'HOST': 'localhost',
         'PORT': '5432',
