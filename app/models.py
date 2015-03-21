@@ -8,6 +8,20 @@ CHARFIELD_MAX_SM = 256
 CHARFIELD_MAX_LG = 10000
 
 
+class Blogger(AbstractEmailUser):
+    username = models.CharField(max_length=CHARFIELD_MAX_SM, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Blogger'
+        verbose_name_plural = 'Bloggers'
+
+    def __unicode__(self):
+        return '{0} - {1}'.format(self.username, self.email)
+
+    def __str__(self):
+        return unicode(self)
+
+
 class Image(models.Model):
     url = models.CharField(max_length=CHARFIELD_MAX_SM, null=True, blank=True)
 

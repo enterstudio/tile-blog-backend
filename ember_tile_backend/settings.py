@@ -37,11 +37,14 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'app.Blogger'
+
 
 # Application definition
 
 INSTALLED_APPS = (
     'app',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +54,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,6 +67,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ember_tile_backend.urls'
 
 WSGI_APPLICATION = 'ember_tile_backend.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Database
