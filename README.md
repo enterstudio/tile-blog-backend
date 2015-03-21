@@ -8,7 +8,7 @@ On the upside, this repo is still pretty easy to use!
 ## Setup
 
 You need `pip`, `postgres`, and `virtualenv`.  You also need a config file (This app will look for `config/local.env`) 
-with the following structure:
+with the following fields:
 
 ```
 DJANGO_SECRET_KEY=<some-secret-key>
@@ -17,7 +17,7 @@ POSTGRES_DB_USER=<your-postgres-username>
 POSTGRES_DB_PASS=<your-postgres-password>
 ```
 
-To run the server locally, just run the following commands:
+To run download and the server locally, just enter the following commands from your working directory:
 
 ```
 $ git clone https://github.com/Fuiste/tile-blog-backend.git
