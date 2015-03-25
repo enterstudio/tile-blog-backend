@@ -45,6 +45,8 @@ AUTH_USER_MODEL = 'app.Blogger'
 INSTALLED_APPS = (
     'app',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
