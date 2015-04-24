@@ -41,4 +41,4 @@ class UserAuthenticationView(APIView):
         serializer = self.serializer_class(data=request.DATA)
         user = serializer.validate(request.DATA.copy())
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user": user.id, "email" user.email}, status=status.HTTP_200_OK)
+        return Response({"token": token.key, "user": user.id, "email": user.email}, status=status.HTTP_200_OK)
