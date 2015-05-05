@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^api/images/$', ImageList.as_view(), name="images-list"),
     url(r'^api/images/(?P<pk>[0-9]+)/$', ImageDetail.as_view(), name="images-detail"),
     url(r'^api/bloggers/(?P<pk>[0-9]+)/$', BloggerDetail.as_view(), name="blogger-detail"),
-    url(r'^api/authenticate-upload/$', UploadAuthenticationView.as_view(). name="authenticate-upload")
+    url(r'^api/authenticate-upload/$', UploadAuthenticationView.as_view(), name="authenticate-upload")
 )
