@@ -11,6 +11,7 @@ import os
 import json
 import time
 import base64
+import hmac
 
 
 __author__ = 'fuiste'
