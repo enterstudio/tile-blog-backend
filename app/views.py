@@ -6,8 +6,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from app.models import Blogger
-import time, os, json, base64, hmac, urllib
+import time, os, json, base64, hmac, urllib, boto, sys
 from hashlib import sha1
+import boto.s3
+from boto.s3.key import Key
 
 
 __author__ = 'fuiste'
@@ -46,24 +48,14 @@ class UserAuthenticationView(APIView):
         return Response({"token": token.key, "user": user.id, "email": user.email}, status=status.HTTP_200_OK)
 
 
-class UploadAuthenticationView(APIView):
+class UploadImageView(APIView):
 
     def post(self,request):
-        AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-        AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
-        S3_BUCKET = os.environ.get('S3_BUCKET')
+        AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+        AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
 
-        object_name = urllib.quote_plus(request.POST.get('file_name'))
-        mime_type = request.POST.get('file_type')
-
-        expires = int(time.time()+60*5)
-        amz_headers = "x-amz-acl:public-read"
-
-        string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-
-        signature = hmac.new(AWS_SECRET_KEY, string_to_sign.encode('utf8'), sha1).digest()
-        signature = base64.encodestring(urllib.quote_plus(signature.strip()))
-
-        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-
-        return Response(json.dumps({'signed_request': "%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s" % (url, AWS_ACCESS_KEY, expires, signature), 'url': url}), status=status.HTTP_200_OK)
+        bucket_name = os.environ.get('S3_BUCKET')
+        conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+        bucket = conn.get_bucket('tile-blog')
+        print request.FILES.get('file')
+        return Response({"token": "YOYOYO"}, status=status.HTTP_200_OK)
