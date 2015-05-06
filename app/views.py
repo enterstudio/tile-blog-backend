@@ -6,12 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from app.models import Blogger
-import urllib
-import os
-import json
-import time
-import base64
-import hmac
+import time, os, json, base64, hmac, urllib
+from hashlib import sha1
 
 
 __author__ = 'fuiste'
