@@ -62,8 +62,8 @@ class UploadAuthenticationView(APIView):
         string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
 
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, string_to_sign.encode('utf8'), sha1).digest())
-        signature = urllib.quote_plus(signature)
+        signature = urllib.quote_plus(signature.strip())
 
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
-        return Response({'signed_request': "%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s" % (url, AWS_ACCESS_KEY, expires, signature), 'url': url}, status=status.HTTP_200_OK)
+        return Response(json.dumps({'signed_request': "%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s" % (url, AWS_ACCESS_KEY, expires, signature), 'url': url}), status=status.HTTP_200_OK)
