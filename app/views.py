@@ -66,4 +66,4 @@ class UploadAuthenticationView(APIView):
 
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
-        return Response(json.dumps({'signed_request': "%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s" % (url, AWS_ACCESS_KEY, expires, signature), 'url': url}), status=status.HTTP_200_OK)
+        return Response(json.dumps({'signed_request': urllib.quote_plus("%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s" % (url, AWS_ACCESS_KEY, expires, signature)), 'url': url}), status=status.HTTP_200_OK)
