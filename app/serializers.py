@@ -55,6 +55,14 @@ class ImageList(APIView):
         serializer = ImageSerializer(images, many=True)
         return Response(serializer.data)
 
+    def post(self, request, format=None):
+        serializer = PostSerializer(data=request.DATA)
+        if serializer.is_valid():
+            post = serializer.save()
+            post.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BloggerDetail(APIView):
     model = Blogger
