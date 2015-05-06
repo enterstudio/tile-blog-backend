@@ -54,8 +54,8 @@ class UploadAuthenticationView(APIView):
         AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
         S3_BUCKET = os.environ.get('S3_BUCKET')
 
-        object_name = urllib.quote_plus(request.args.get('file_name'))
-        mime_type = request.args.get('file_type')
+        object_name = urllib.quote_plus(request.POST.get('file_name'))
+        mime_type = request.POST.get('file_type')
 
         expires = int(time.time()+60*60*24)
         amz_headers = "x-amz-acl:public-read"
