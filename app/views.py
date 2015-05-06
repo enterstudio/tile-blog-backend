@@ -56,13 +56,13 @@ class UploadAuthenticationView(APIView):
         object_name = urllib.quote_plus(request.POST.get('file_name'))
         mime_type = request.POST.get('file_type')
 
-        expires = int(time.time()+60*60*24)
+        expires = int(time.time()+60*5)
         amz_headers = "x-amz-acl:public-read"
 
         string_to_sign = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
 
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, string_to_sign.encode('utf8'), sha1).digest())
-        signature = urllib.quote_plus(signature.strip())
+        signature = urllib.quote_plus(signature)
 
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
