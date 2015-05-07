@@ -56,7 +56,7 @@ class ImageList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = PostSerializer(data=request.DATA)
+        serializer = ImageSerializer(data=request.DATA)
         if serializer.is_valid():
             post = serializer.save()
             post.save()
@@ -95,9 +95,14 @@ class PostDetail(APIView):
         serializer = PostSerializer(tgt)
         return Response(serializer.data)
 
-    def put( self, request, pk, format=None):
+    def put(self, request, pk, format=None):
+        req = request.DATA
+        if req['cover_photo']:
+            req['cover_photo'] = int(req['cover_photo'])
         tgt = self.get_object(pk)
-        serializer = PostSerializer(tgt, data=request.DATA)
+        serializer = PostSerializer(tgt, data=req)
+        print serializer.is_valid()
+        print serializer.errors
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

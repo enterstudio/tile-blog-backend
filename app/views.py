@@ -5,8 +5,9 @@ from rest_framework import serializers, status, renderers, parsers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from rest_framework.parsers import FileUploadParser
 from app.models import Blogger
-import time, os, json, base64, hmac, urllib, boto, sys
+import time, os, json, base64, hmac, urllib, boto, sys, string, random
 from hashlib import sha1
 import boto.s3
 from boto.s3.key import Key
@@ -49,13 +50,28 @@ class UserAuthenticationView(APIView):
 
 
 class UploadImageView(APIView):
+    parser_classes = (FileUploadParser,)
 
-    def post(self,request):
+    def post(self, request):
+        # Grab the uploaded file
+        file = request.data['file']
+
+        # Grab AWS creds
         AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
         AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
+        BUCKET_NAME = os.environ.get('S3_BUCKET')
 
-        bucket_name = os.environ.get('S3_BUCKET')
+        # Connect to AWS and grab our bucket
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-        bucket = conn.get_bucket('tile-blog')
-        print request.FILES.get('file')
-        return Response({"token": "YOYOYO"}, status=status.HTTP_200_OK)
+        bucket = conn.get_bucket(BUCKET_NAME)
+
+        # Generate new filename and upload to s3
+        filename = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
+        k = Key(bucket)
+        k.key = "{0}.{1}".format(filename, file.name.split('.')[1])
+        k.set_contents_from_file(file)
+        k.make_public()
+        http_url = "http://{0}.{1}/{2}".format(BUCKET_NAME, conn.server_name(), k.key)
+
+        # Return the location to ember
+        return Response({"url": http_url}, status=status.HTTP_200_OK)
