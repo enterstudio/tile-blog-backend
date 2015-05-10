@@ -11,6 +11,7 @@ import json
 
 
 __author__ = 'fuiste'
+PAGE_SIZE = 20
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -33,7 +34,20 @@ class PostList(APIView):
     serializer_class = PostSerializer
 
     def get(self, request, format=None):
-        posts = Post.objects.all()
+        page = int(request.QUERY_PARAMS.get('page'))
+        if page:
+            count = Post.objects.all().count() - 1
+            upper_bound = page * PAGE_SIZE
+            lower_bound = upper_bound - PAGE_SIZE
+            if upper_bound > count:
+                lower_bound = count - PAGE_SIZE
+                if lower_bound < 0:
+                    lower_bound = 0
+                posts = Post.objects.order_by('-date')[lower_bound:count]
+            else:
+                posts = Post.objects.order_by('-date')[lower_bound:upper_bound]
+        else:
+            posts = Post.objects.order_by('-date')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 

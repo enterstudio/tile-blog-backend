@@ -34,5 +34,4 @@ class Post(models.Model):
     full_width = models.BooleanField(null=False, default=False)
     date = models.DateTimeField(null=False, default=timezone.now())
     cover_photo = models.ForeignKey('Image', null=True, blank=True)
-
-
+    sub_photos = models.ManyToManyField('Image', related_name="image_sub", null=True, blank=True)
