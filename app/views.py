@@ -5,6 +5,7 @@ from rest_framework import serializers, status, renderers, parsers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import FileUploadParser
 from app.models import Blogger
 import time, os, json, base64, hmac, urllib, boto, sys, string, random
@@ -50,9 +51,11 @@ class UserAuthenticationView(APIView):
 
 
 class UploadImageView(APIView):
+    authentication_classes = (TokenAuthentication,)
     parser_classes = (FileUploadParser,)
 
     def post(self, request):
+        print request.user
         # Grab the uploaded file
         file = request.data['file']
 

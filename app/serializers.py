@@ -32,6 +32,7 @@ class BloggerSerializer(serializers.ModelSerializer):
 class PostList(APIView):
     model = Post
     serializer_class = PostSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
         page = int(request.QUERY_PARAMS.get('page'))
