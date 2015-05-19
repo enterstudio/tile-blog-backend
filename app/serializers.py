@@ -136,7 +136,7 @@ class PostDetail(APIView):
         if tgt.cover_photo:
             tgt.cover_photo.delete()
         tgt.sub_photos.all().delete()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"success": "Successfully deleted"}, status=status.HTTP_200_OK)
 
 class ImageDetail(APIView):
     model = Image
