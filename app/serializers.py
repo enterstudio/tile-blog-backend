@@ -36,10 +36,6 @@ class PostList(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
-        if request.auth:
-            print "YAY"
-        else:
-            print "NOOO"
         page = int(request.QUERY_PARAMS.get('page'))
         if page:
             count = Post.objects.all().count() - 1
@@ -58,12 +54,14 @@ class PostList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = PostSerializer(data=request.DATA)
-        if serializer.is_valid():
-            post = serializer.save()
-            post.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.auth:
+            serializer = PostSerializer(data=request.DATA)
+            if serializer.is_valid():
+                post = serializer.save()
+                post.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
 
 
 class ImageList(APIView):
@@ -76,12 +74,14 @@ class ImageList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = ImageSerializer(data=request.DATA)
-        if serializer.is_valid():
-            post = serializer.save()
-            post.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.auth:
+            serializer = ImageSerializer(data=request.DATA)
+            if serializer.is_valid():
+                post = serializer.save()
+                post.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
 
 
 class BloggerDetail(APIView):
@@ -116,17 +116,25 @@ class PostDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        req = request.DATA
-        if req['cover_photo']:
-            req['cover_photo'] = int(req['cover_photo'])
-        tgt = self.get_object(pk)
-        serializer = PostSerializer(tgt, data=req)
-        print serializer.is_valid()
-        print serializer.errors
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+        if request.auth:
+            req = request.DATA
+            if req['cover_photo']:
+                req['cover_photo'] = int(req['cover_photo'])
+            tgt = self.get_object(pk)
+            serializer = PostSerializer(tgt, data=req)
+            print serializer.is_valid()
+            print serializer.errors
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
 
+    def delete(self, request, pk, format=None):
+        tgt = self.get_object(pk)
+        tgt.cover_photo.delete()
+        tgt.sub_photos.all().delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ImageDetail(APIView):
     model = Image
