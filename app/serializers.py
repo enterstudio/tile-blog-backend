@@ -61,7 +61,7 @@ class PostList(APIView):
                 post.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "You need to be logged in to do that..."}, status=status.HTTP_403_FORBIDDEN)
 
 
 class ImageList(APIView):
@@ -81,7 +81,7 @@ class ImageList(APIView):
                 post.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "You need to be logged in to do that..."}, status=status.HTTP_403_FORBIDDEN)
 
 
 class BloggerDetail(APIView):
@@ -128,7 +128,7 @@ class PostDetail(APIView):
                 serializer.save()
                 return Response(serializer.data)
         else:
-            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "You need to be logged in to do that..."}, status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, pk, format=None):
         tgt = self.get_object(pk)

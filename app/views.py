@@ -49,6 +49,19 @@ class UserAuthenticationView(APIView):
         token, created = Token.objects.get_or_create(user=user)
         return Response({"token": token.key, "user": user.id, "email": user.email}, status=status.HTTP_200_OK)
 
+class UpdateUsernameView(APIView):
+    authentication_classes = (TokenAuthentication,)
+
+    def post(self, request):
+        if request.auth:
+            new_name = request.POST.get('new_name')
+            if new_name:
+                request.user.username = new_name
+                request.user.save
+                return Response({"username": request.user.username}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "You need to be logged in to do that..."}, status=status.HTTP_403_FORBIDDEN)
+
 
 class UploadImageView(APIView):
     authentication_classes = (TokenAuthentication,)

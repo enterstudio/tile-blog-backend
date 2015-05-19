@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from app.views import UserAuthenticationView, UploadImageView
+from app.views import UserAuthenticationView, UploadImageView, UpdateUsernameView
 from app.serializers import PostList, PostDetail, ImageList, ImageDetail, BloggerDetail
 
 urlpatterns = patterns('',
@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^api/images/$', ImageList.as_view(), name="images-list"),
     url(r'^api/images/(?P<pk>[0-9]+)/$', ImageDetail.as_view(), name="images-detail"),
     url(r'^api/bloggers/(?P<pk>[0-9]+)/$', BloggerDetail.as_view(), name="blogger-detail"),
-    url(r'^api/authenticate-upload/$', UploadImageView.as_view(), name="upload-image")
+    url(r'^api/authenticate-upload/$', UploadImageView.as_view(), name="upload-image"),
+    url(r'^api/update-username/$', UpdateUsernameView.as_view(), name="set-username")
 )
