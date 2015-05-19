@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from app.models import Post, Image, Blogger
 from django.utils import timezone
 import urllib2
-import json
+import json, os
 
 
 __author__ = 'fuiste'
