@@ -133,7 +133,8 @@ class PostDetail(APIView):
 
     def delete(self, request, pk, format=None):
         tgt = self.get_object(pk)
-        tgt.cover_photo.delete()
+        if tgt.cover_photo:
+            tgt.cover_photo.delete()
         tgt.sub_photos.all().delete()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
