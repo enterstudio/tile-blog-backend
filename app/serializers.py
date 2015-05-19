@@ -11,7 +11,7 @@ import json
 
 
 __author__ = 'fuiste'
-PAGE_SIZE = 20
+PAGE_SIZE = int(os.environ.get('PAGE_SIZE'))
 
 
 class PostSerializer(serializers.ModelSerializer):
