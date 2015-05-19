@@ -57,7 +57,7 @@ class UpdateUsernameView(APIView):
             new_name = request.POST.get('new_name')
             if new_name:
                 request.user.username = new_name
-                request.user.save
+                request.user.save()
                 return Response({"username": request.user.username}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "You need to be logged in to do that..."}, status=status.HTTP_403_FORBIDDEN)
