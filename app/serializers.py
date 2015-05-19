@@ -4,6 +4,7 @@ from rest_framework import serializers, status, renderers, parsers
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
 from app.models import Post, Image, Blogger
 from django.utils import timezone
 import urllib2
