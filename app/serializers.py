@@ -67,6 +67,7 @@ class PostList(APIView):
 class ImageList(APIView):
     model = Image
     serializer_class = ImageSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
         images = Image.objects.all()
