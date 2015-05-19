@@ -107,6 +107,10 @@ class PostDetail(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
+        if request.user.email:
+            print "YAY"
+        else:
+            print "NOOO"
         tgt = self.get_object(pk)
         serializer = PostSerializer(tgt)
         return Response(serializer.data)

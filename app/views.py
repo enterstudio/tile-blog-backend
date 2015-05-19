@@ -55,7 +55,6 @@ class UploadImageView(APIView):
     parser_classes = (FileUploadParser,)
 
     def post(self, request):
-        print request.user
         # Grab the uploaded file
         file = request.data['file']
 
