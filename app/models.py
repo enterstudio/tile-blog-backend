@@ -30,7 +30,6 @@ class Post(models.Model):
     title = models.CharField(max_length=CHARFIELD_MAX_SM, null=False, default="Untitled")
     description = models.CharField(max_length=CHARFIELD_MAX_LG, null=True, blank=True)
     author = models.CharField(max_length=CHARFIELD_MAX_SM, null=False, default="Anonymous")
-    large = models.BooleanField(null=False, default=False)
     full_width = models.BooleanField(null=False, default=False)
     date = models.DateTimeField(null=False, default=timezone.now())
     cover_photo = models.ForeignKey('Image', null=True, blank=True)
